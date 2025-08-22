@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Portal | Select Your Subject</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px;
+            background: url('https://i.pinimg.com/736x/db/34/d4/db34d40b271fb59477621550bf73ea0b.jpg') no-repeat center center;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin: 20px;
+        }
+        
+        header {
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.8);
+            letter-spacing: 1px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: #34495e;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+        
+        .subjects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .subject {
+            background: white;
+            padding: 20px 12px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+        }
+        
+        .subject:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+        
+        .subject::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .subject i {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+        
+        .subject h3 {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .subject p {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+        }
+        
+        .math { --color: #e74c3c; }
+        .math::before { background: var(--color); }
+        
+        .english { --color: #3498db; }
+        .english::before { background: var(--color); }
+        
+        .physics { --color: #9b59b6; }
+        .physics::before { background: var(--color); }
+        
+        .chemistry { --color: #2ecc71; }
+        .chemistry::before { background: var(--color); }
+        
+        .biology { --color: #f1c40f; }
+        .biology::before { background: var(--color); }
+        
+        .computer { --color: #1abc9c; }
+        .computer::before { background: var(--color); }
+        
+        .history { --color: #d35400; }
+        .history::before { background: var(--color); }
+        
+        .geography { --color: #27ae60; }
+        .geography::before { background: var(--color); }
+        
+        .art { --color: #8e44ad; }
+        .art::before { background: var(--color); }
+        
+        .music { --color: #e67e22; }
+        .music::before { background: var(--color); }
+        
+        .subject:hover i {
+            color: var(--color);
+            transform: scale(1.15);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .tagline {
+                font-size: 1.1rem;
+            }
+            
+            .subjects-container {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 15px;
+            }
+            
+            .subject {
+                padding: 18px 10px;
+            }
+            
+            .subject i {
+                font-size: 1.8rem;
+            }
+            
+            .subject h3 {
+                font-size: 1.1rem;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+                margin-bottom: 20px;
+            }
+            
+            .subjects-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>QUIZ</h1>
+            <p class="tagline">Test your knowledge across various subjects</p>
+        </header>
+        
+        <div class="subjects-container">
+            <a href="maths.html" class="subject math">
+                <i class="fas fa-calculator"></i>
+                <h3>Mathematics</h3>
+                <p>Algebra, Calculus</p>
+            </a>
+            
+            <a href="english.html" class="subject english">
+                <i class="fas fa-book"></i>
+                <h3>English</h3>
+                <p>Literature, Grammar</p>
+            </a>
+            
+            <a href="physics.html" class="subject physics">
+                <i class="fas fa-atom"></i>
+                <h3>Physics</h3>
+                <p>Mechanics, Energy</p>
+            </a>
+            
+            <a href="chemistry.html" class="subject chemistry">
+                <i class="fas fa-flask"></i>
+                <h3>Chemistry</h3>
+                <p>Organic, Reactions</p>
+            </a>
+            
+            <a href="biology.html" class="subject biology">
+                <i class="fas fa-dna"></i>
+                <h3>Biology</h3>
+                <p>Botany, Zoology</p>
+            </a>
+            
+            <a href="computer.html" class="subject computer">
+                <i class="fas fa-laptop-code"></i>
+                <h3>Computer Science</h3>
+                <p>Programming, AI</p>
+            </a>
+            
+            <a href="history.html" class="subject history">
+                <i class="fas fa-monument"></i>
+                <h3>History</h3>
+                <p>World History</p>
+            </a>
+            
+            <a href="geo.html" class="subject geography">
+                <i class="fas fa-globe-americas"></i>
+                <h3>Geography</h3>
+                <p>Physical, Human</p>
+            </a>
+            
+          
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const subjects = document.querySelectorAll('.subject');
+            
+            subjects.forEach(subject => {
+                subject.addEventListener('click', function(e) {
+                    // The anchor tag will handle navigation automatically
+                    // We're keeping this event listener for any future functionality
+                });
+            });
+        });
+    </script>
+</body>
+</html>

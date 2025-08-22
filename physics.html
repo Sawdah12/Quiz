@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff7675 0%, #fdcb6e 100%);
+            padding: 20px;
+        }
+        
+        .quiz-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .quiz-header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .quiz-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .quiz-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: #ecf0f1;
+            margin-top: 15px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #3498db;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .quiz-body {
+            padding: 30px;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question-number {
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .question-text {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        @media (max-width: 600px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .option {
+            padding: 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .option.selected {
+            background: #d6eaf8;
+            border-color: #3498db;
+        }
+        
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-prev {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-next {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-submit {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .results-container {
+            text-align: center;
+            padding: 40px 30px;
+        }
+        
+        .results-container h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .score {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #3498db;
+            margin: 20px 0;
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #7f8c8d;
+        }
+        
+        .results-details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .result-item {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-question {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .result-answer {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+        
+        .result-correct {
+            color: #28a745;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .result-incorrect {
+            color: #dc3545;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .result-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .btn-restart {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .btn-home {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1><i class="fas fa-atom"></i> Physics Quiz</h1>
+            <p>Test your physics knowledge with these 10 questions</p>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+        </div>
+        
+        <div class="quiz-body" id="quiz-body">
+            <!-- Question 1 -->
+            <div class="question" id="question-1">
+                <div class="question-number">Question 1 of 10</div>
+                <div class="question-text">What is the SI unit of force?</div>
+                <div class="options">
+                    <div class="option" data-value="A">Newton</div>
+                    <div class="option" data-value="B">Joule</div>
+                    <div class="option" data-value="C">Watt</div>
+                    <div class="option" data-value="D">Pascal</div>
+                </div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question hidden" id="question-2">
+                <div class="question-number">Question 2 of 10</div>
+                <div class="question-text">Which law states that for every action, there is an equal and opposite reaction?</div>
+                <div class="options">
+                    <div class="option" data-value="A">Newton's First Law</div>
+                    <div class="option" data-value="B">Newton's Second Law</div>
+                    <div class="option" data-value="C">Newton's Third Law</div>
+                    <div class="option" data-value="D">Law of Gravitation</div>
+                </div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question hidden" id="question-3">
+                <div class="question-number">Question 3 of 10</div>
+                <div class="question-text">What is the speed of light in a vacuum?</div>
+                <div class="options">
+                    <div class="option" data-value="A">299,792,458 m/s</div>
+                    <div class="option" data-value="B">300,000,000 m/s</div>
+                    <div class="option" data-value="C">150,000,000 m/s</div>
+                    <div class="option" data-value="D">450,000,000 m/s</div>
+                </div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question hidden" id="question-4">
+                <div class="question-number">Question 4 of 10</div>
+                <div class="question-text">Which subatomic particle has a negative charge?</div>
+                <div class="options">
+                    <div class="option" data-value="A">Proton</div>
+                    <div class="option" data-value="B">Neutron</div>
+                    <div class="option" data-value="C">Electron</div>
+                    <div class="option" data-value="D">Photon</div>
+                </div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question hidden" id="question-5">
+                <div class="question-number">Question 5 of 10</div>
+                <div class="question-text">What is the formula for kinetic energy?</div>
+                <div class="options">
+                    <div class="option" data-value="A">½mv²</div>
+                    <div class="option" data-value="B">mgh</div>
+                    <div class="option" data-value="C">F × d</div>
+                    <div class="option" data-value="D">P × V</div>
+                </div>
+            </div>
+            
+            <!-- Question 6 -->
+            <div class="question hidden" id="question-6">
+                <div class="question-number">Question 6 of 10</div>
+                <div class="question-text">Which type of lens converges light rays?</div>
+                <div class="options">
+                    <div class="option" data-value="A">Convex lens</div>
+                    <div class="option" data-value="B">Concave lens</div>
+                    <div class="option" data-value="C">Plano-concave lens</div>
+                    <div class="option" data-value="D">Diverging lens</div>
+                </div>
+            </div>
+            
+            <!-- Question 7 -->
+            <div class="question hidden" id="question-7">
+                <div class="question-number">Question 7 of 10</div>
+                <div class="question-text">What is the unit of electrical resistance?</div>
+                <div class="options">
+                    <div class="option" data-value="A">Volt</div>
+                    <div class="option" data-value="B">Ampere</div>
+                    <div class="option" data-value="C">Ohm</div>
+                    <div class="option" data-value="D">Watt</div>
+                </div>
+            </div>
+            
+            <!-- Question 8 -->
+            <div class="question hidden" id="question-8">
+                <div class="question-number">Question 8 of 10</div>
+                <div class="question-text">Which scientist proposed the theory of relativity?</div>
+                <div class="options">
+                    <div class="option" data-value="A">Isaac Newton</div>
+                    <div class="option" data-value="B">Albert Einstein</div>
+                    <div class="option" data-value="C">Niels Bohr</div>
+                    <div class="option" data-value="D">Galileo Galilei</div>
+                </div>
+            </div>
+            
+            <!-- Question 9 -->
+            <div class="question hidden" id="question-9">
+                <div class="question-number">Question 9 of 10</div>
+                <div class="question-text">What is the law of conservation of energy?</div>
+                <div class="options">
+                    <div class="option" data-value="A">Energy cannot be created or destroyed</div>
+                    <div class="option" data-value="B">Energy increases over time</div>
+                    <div class="option" data-value="C">Energy decreases in a closed system</div>
+                    <div class="option" data-value="D">Energy can be created but not destroyed</div>
+                </div>
+            </div>
+            
+            <!-- Question 10 -->
+            <div class="question hidden" id="question-10">
+                <div class="question-number">Question 10 of 10</div>
+                <div class="question-text">Which phenomenon explains why the sky appears blue?</div>
+                <div class="options">
+                    <div class="option" data-value="A">Refraction</div>
+                    <div class="option" data-value="B">Reflection</div>
+                    <div class="option" data-value="C">Rayleigh scattering</div>
+                    <div class="option" data-value="D">Diffraction</div>
+                </div>
+            </div>
+            
+            <div class="navigation">
+                <button class="btn btn-prev" id="prev-btn" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+                <button class="btn btn-next" id="next-btn">Next <i class="fas fa-arrow-right"></i></button>
+                <button class="btn btn-submit hidden" id="submit-btn">Submit Answers</button>
+            </div>
+        </div>
+        
+        <div class="results-container hidden" id="results-container">
+            <h2>Quiz Results</h2>
+            <div class="score" id="score">0/10</div>
+            <div class="score-text" id="score-text">Keep practicing to improve your physics knowledge!</div>
+            
+            <div class="results-details" id="results-details">
+                <!-- Results will be inserted here by JavaScript -->
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-restart" id="restart-btn"><i class="fas fa-redo"></i> Restart Quiz</button>
+                <button class="btn btn-home" id="home-btn"><i class="fas fa-home"></i> Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Quiz configuration
+            const questions = [
+                {
+                    question: "What is the SI unit of force?",
+                    options: ["Newton", "Joule", "Watt", "Pascal"],
+                    correctAnswer: "A"
+                },
+                {
+                    question: "Which law states that for every action, there is an equal and opposite reaction?",
+                    options: ["Newton's First Law", "Newton's Second Law", "Newton's Third Law", "Law of Gravitation"],
+                    correctAnswer: "C"
+                },
+                {
+                    question: "What is the speed of light in a vacuum?",
+                    options: ["299,792,458 m/s", "300,000,000 m/s", "150,000,000 m/s", "450,000,000 m/s"],
+                    correctAnswer: "A"
+                },
+                {
+                    question: "Which subatomic particle has a negative charge?",
+                    options: ["Proton", "Neutron", "Electron", "Photon"],
+                    correctAnswer: "C"
+                },
+                {
+                    question: "What is the formula for kinetic energy?",
+                    options: ["½mv²", "mgh", "F × d", "P × V"],
+                    correctAnswer: "A"
+                },
+                {
+                    question: "Which type of lens converges light rays?",
+                    options: ["Convex lens", "Concave lens", "Plano-concave lens", "Diverging lens"],
+                    correctAnswer: "A"
+                },
+                {
+                    question: "What is the unit of electrical resistance?",
+                    options: ["Volt", "Ampere", "Ohm", "Watt"],
+                    correctAnswer: "C"
+                },
+                {
+                    question: "Which scientist proposed the theory of relativity?",
+                    options: ["Isaac Newton", "Albert Einstein", "Niels Bohr", "Galileo Galilei"],
+                    correctAnswer: "B"
+                },
+                {
+                    question: "What is the law of conservation of energy?",
+                    options: ["Energy cannot be created or destroyed", "Energy increases over time", "Energy decreases in a closed system", "Energy can be created but not destroyed"],
+                    correctAnswer: "A"
+                },
+                {
+                    question: "Which phenomenon explains why the sky appears blue?",
+                    options: ["Refraction", "Reflection", "Rayleigh scattering", "Diffraction"],
+                    correctAnswer: "C"
+                }
+            ];
+            
+            // DOM elements
+            const progressBar = document.getElementById('progress');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const restartBtn = document.getElementById('restart-btn');
+            const homeBtn = document.getElementById('home-btn');
+            const quizBody = document.getElementById('quiz-body');
+            const resultsContainer = document.getElementById('results-container');
+            const scoreElement = document.getElementById('score');
+            const scoreTextElement = document.getElementById('score-text');
+            const resultsDetailsElement = document.getElementById('results-details');
+            
+            // Quiz state
+            let currentQuestion = 1;
+            const userAnswers = new Array(questions.length).fill(null);
+            
+            // Initialize the quiz
+            updateProgressBar();
+            setupOptionSelection();
+            
+            // Event listeners
+            prevBtn.addEventListener('click', goToPreviousQuestion);
+            nextBtn.addEventListener('click', goToNextQuestion);
+            submitBtn.addEventListener('click', submitQuiz);
+            restartBtn.addEventListener('click', restartQuiz);
+            homeBtn.addEventListener('click', goToHome);
+            
+            // Function to update progress bar
+            function updateProgressBar() {
+                const progress = (currentQuestion / questions.length) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            // Function to setup option selection
+            function setupOptionSelection() {
+                const options = document.querySelectorAll(`#question-${currentQuestion} .option`);
+                
+                options.forEach(option => {
+                    option.addEventListener('click', function() {
+                        // Remove selected class from all options in this question
+                        options.forEach(opt => opt.classList.remove('selected'));
+                        
+                        // Add selected class to clicked option
+                        this.classList.add('selected');
+                        
+                        // Store the user's answer
+                        userAnswers[currentQuestion - 1] = this.getAttribute('data-value');
+                    });
+                });
+            }
+            
+            // Function to go to the next question
+            function goToNextQuestion() {
+                if (currentQuestion < questions.length) {
+                    // Hide current question
+                    document.getElementById(`question-${currentQuestion}`).classList.add('hidden');
+                    
+                    // Show next question
+                    currentQuestion++;
+                    document.getElementById(`question-${currentQuestion}`).classList.remove('hidden');
+                    
+                    // Update buttons
+                    prevBtn.disabled = false;
+                    if (currentQuestion === questions.length) {
+                        nextBtn.classList.add('hidden');
+                        submitBtn.classList.remove('hidden');
+                    }
+                    
+                    // Update progress bar
+                    updateProgressBar();
+                    
+                    // Check if user has already selected an option for this question
+                    if (userAnswers[currentQuestion - 1] !== null) {
+                        const selectedOption = document.querySelector(`#question-${currentQuestion} .option[data-value="${userAnswers[currentQuestion - 1]}"]`);
+                        if (selectedOption) {
+                            selectedOption.classList.add('selected');
+                        }
+                    }
+                    
+                    // Setup option selection for the new question
+                    setupOptionSelection();
+                }
+            }
+            
+            // Function to go to the previous question
+            function goToPreviousQuestion() {
+                if (currentQuestion > 1) {
+                    // Hide current question
+                    document.getElementById(`question-${currentQuestion}`).classList.add('hidden');
+                    
+                    // Show previous question
+                    currentQuestion--;
+                    document.getElementById(`question-${currentQuestion}`).classList.remove('hidden');
+                    
+                    // Update buttons
+                    nextBtn.classList.remove('hidden');
+                    submitBtn.classList.add('hidden');
+                    if (currentQuestion === 1) {
+                        prevBtn.disabled = true;
+                    }
+                    
+                    // Update progress bar
+                    updateProgressBar();
+                    
+                    // Check if user has already selected an option for this question
+                    if (userAnswers[currentQuestion - 1] !== null) {
+                        const selectedOption = document.querySelector(`#question-${currentQuestion} .option[data-value="${userAnswers[currentQuestion - 1]}"]`);
+                        if (selectedOption) {
+                            selectedOption.classList.add('selected');
+                        }
+                    }
+                    
+                    // Setup option selection for the new question
+                    setupOptionSelection();
+                }
+            }
+            
+            // Function to submit the quiz
+            function submitQuiz() {
+                // Calculate score
+                let score = 0;
+                questions.forEach((question, index) => {
+                    if (userAnswers[index] === question.correctAnswer) {
+                        score++;
+                    }
+                });
+                
+                // Display score
+                scoreElement.textContent = `${score}/${questions.length}`;
+                
+                // Set score text based on performance
+                if (score === questions.length) {
+                    scoreTextElement.textContent = "Perfect! You're a physics genius!";
+                } else if (score >= questions.length * 0.7) {
+                    scoreTextElement.textContent = "Great job! You have excellent physics knowledge!";
+                } else if (score >= questions.length * 0.5) {
+                    scoreTextElement.textContent = "Good effort! Keep studying to improve!";
+                } else {
+                    scoreTextElement.textContent = "Keep practicing and try again!";
+                }
+                
+                // Display results details
+                resultsDetailsElement.innerHTML = '';
+                questions.forEach((question, index) => {
+                    const isCorrect = userAnswers[index] === question.correctAnswer;
+                    const userAnswer = userAnswers[index] ? question.options[userAnswers[index].charCodeAt(0) - 65] : "Not answered";
+                    const correctAnswer = question.options[question.correctAnswer.charCodeAt(0) - 65];
+                    
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'result-item';
+                    resultItem.innerHTML = `
+                        <div class="result-question">${index + 1}. ${question.question}</div>
+                        <div class="result-answer">
+                            <span>Your answer: ${userAnswer}</span>
+                            ${isCorrect ? 
+                                `<i class="fas fa-check result-icon" style="color: #28a745;"></i>
+                                <span class="result-correct">Correct</span>` :
+                                `<i class="fas fa-times result-icon" style="color: #dc3545;"></i>
+                                <span class="result-incorrect">Incorrect</span>`
+                            }
+                        </div>
+                        ${!isCorrect ? 
+                            `<div class="result-answer">
+                                <span>Correct answer: ${correctAnswer}</span>
+                            </div>` : ''
+                        }
+                    `;
+                    
+                    resultsDetailsElement.appendChild(resultItem);
+                });
+                
+                // Show results container, hide quiz body
+                quizBody.classList.add('hidden');
+                resultsContainer.classList.remove('hidden');
+            }
+            
+            // Function to restart the quiz
+            function restartQuiz() {
+                // Reset quiz state
+                currentQuestion = 1;
+                userAnswers.fill(null);
+                
+                // Reset UI
+                document.querySelectorAll('.question').forEach((question, index) => {
+                    if (index === 0) {
+                        question.classList.remove('hidden');
+                    } else {
+                        question.classList.add('hidden');
+                    }
+                });
+                
+                document.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                prevBtn.disabled = true;
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+                
+                updateProgressBar();
+                setupOptionSelection();
+                
+                // Show quiz body, hide results container
+                quizBody.classList.remove('hidden');
+                resultsContainer.classList.add('hidden');
+            }
+            
+            // Function to go back to home (index.html)
+           function goToHome() {
+    window.location.href = "index.html";
+}
+}
+        );
+    </script>
+</body>
+</html>
