@@ -18,14 +18,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('biology.jpg') no-repeat center center;
+            background: linear-gradient(120deg, #4a7c59 0%, #2c3e50 100%);
             background-size: cover;
             background-attachment: fixed;
             padding: 20px;
             position: relative;
         }
         
-        /* Add an overlay to ensure text readability */
+        /* Fallback background if image doesn't load */
         body::before {
             content: '';
             position: absolute;
@@ -33,8 +33,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.15);
+            background: url('biology.jpg') no-repeat center center;
+            background-size: cover;
             z-index: -1;
+            opacity: 0.3;
         }
         
         .quiz-container {
@@ -275,6 +277,27 @@
         .hidden {
             display: none;
         }
+        
+        .troubleshooting {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8d7da;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .troubleshooting h3 {
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+        
+        .troubleshooting ul {
+            margin-left: 20px;
+        }
+        
+        .troubleshooting li {
+            margin-bottom: 8px;
+        }
     </style>
 </head>
 <body>
@@ -288,6 +311,17 @@
         </div>
         
         <div class="quiz-body" id="quiz-body">
+            <!-- Troubleshooting section -->
+            <div class="troubleshooting">
+                <h3><i class="fas fa-exclamation-triangle"></i> Background Image Not Showing?</h3>
+                <p>If you don't see a biology-themed background image, please check:</p>
+                <ul>
+                    <li>The image file "biology.jpg" is in the same folder as this HTML file</li>
+                    <li>The filename is exactly "biology.jpg" (check capitalization)</li>
+                    <li>The image file is not corrupted</li>
+                </ul>
+            </div>
+            
             <!-- Question 1 -->
             <div class="question" id="question-1">
                 <div class="question-number">Question 1 of 10</div>
